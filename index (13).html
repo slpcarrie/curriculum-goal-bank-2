@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Goal Bank | SLK Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#fff}
+.gb{--t50:#E6F4F7;--t100:#C2E6EC;--t500:#0093AD;--t600:#007A92;--t700:#006175;--ink:#1E1B17;--body:#4E483F;--muted:#6B6459;--line:#E8E4DF;--sunk:#F4F2EF;
+  font-family:'Nunito',system-ui,sans-serif;color:var(--body);line-height:1.5;text-align:left}
+.gb *,.gb *::before,.gb *::after{box-sizing:border-box}
+.gb h1,.gb h2,.gb h3{font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;color:var(--ink);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.gb p{margin:0}
+.gb a{color:var(--t600);text-decoration:none;font-weight:800}
+.gb a:hover{color:var(--t700);text-decoration:underline}
+.gb-wrap{max-width:1180px;margin:0 auto;padding:0 clamp(12px,3vw,24px)}
+.gb-top{padding-top:20px;padding-bottom:4px;display:flex;flex-direction:column;gap:6px}
+.gb h1{font-size:clamp(30px,3.6vw,40px);line-height:1.05}
+.gb-sub{font-size:16px;color:var(--muted);max-width:760px}
+.gb-sub strong{color:var(--body)}
+.gb-layout{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;padding-top:20px;padding-bottom:40px}
+.gb-aside{flex:1 1 250px;max-width:100%;display:flex;flex-direction:column;gap:14px}
+.gb-layout.is-split .gb-aside{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto}
+.gb-main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:36px}
+.gb-panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.gb-label{font-weight:800;font-size:14px;color:var(--ink)}
+.gb-search{width:100%;font:inherit;font-size:16px;color:var(--ink);padding:10px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;outline:none;margin-top:6px;transition:border-color .15s,box-shadow .15s}
+.gb-search:focus{border-color:var(--t500);box-shadow:0 0 0 3px var(--t100)}
+.gb-levels{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gb-pill{font:inherit;font-weight:800;font-size:14px;padding:6px 14px;border-radius:999px;border:0;cursor:pointer;background:var(--sunk);color:var(--body);transition:background .15s,transform .12s}
+.gb-pill:hover{background:var(--t50)}
+.gb-pill:active{transform:translateY(1px) scale(.98)}
+.gb-pill[aria-pressed="true"]{background:var(--t500);color:#fff}
+.gb-count{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:32px}
+.gb-count strong{color:var(--body)}
+.gb-clear{font:inherit;font-weight:800;font-size:14px;background:none;border:0;color:var(--t700);cursor:pointer;padding:6px 10px;border-radius:999px}
+.gb-clear:hover{background:var(--t50)}
+.gb-nav{background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px 16px}
+.gb-nav summary{cursor:pointer;list-style:none;font-weight:800;font-size:14px;color:var(--ink);display:flex;justify-content:space-between}
+.gb-nav summary::-webkit-details-marker{display:none}
+.gb-nav nav{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.gb-navgroup{display:flex;flex-direction:column;gap:3px}
+.gb .gb-navarea{font-size:14px;color:var(--ink)}
+.gb .gb-navitem{font-size:14px;font-weight:600;line-height:1.35;padding-left:10px}
+.gb-area{display:flex;flex-direction:column;gap:14px;scroll-margin-top:12px}
+.gb-areahead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 20px;padding:0 4px}
+.gb-areahead h2{font-size:clamp(24px,2.4vw,30px);line-height:1.1}
+.gb-areadesc{font-size:15px;color:var(--muted)}
+.gb-areahead a{font-size:15px}
+.gb-card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--acc);border-radius:20px;box-shadow:0 2px 6px rgba(50,46,40,.08);padding:18px 20px 6px;scroll-margin-top:12px}
+.gb-cardhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:8px 20px;margin-bottom:10px}
+.gb-cardhead h3{font-size:23px;line-height:1.15}
+.gb-focus{font-size:15px;font-weight:600;color:var(--muted)}
+.gb-headlinks{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:15px}
+.gb-rows{list-style:none;margin:0;padding:0}
+.gb-row{display:grid;grid-template-columns:112px minmax(0,1fr) auto;gap:8px 14px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.gb-row-chips,.gb-row-nobtn{grid-template-columns:112px minmax(0,1fr)}
+.gb-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.gb-title{font-weight:800;font-size:16px;color:var(--ink);line-height:1.35}
+.gb-text p{font-size:15.5px;line-height:1.5;text-wrap:pretty}
+.gb-badge{justify-self:start;margin-top:2px;font-weight:800;font-size:13px;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.gb-badge-b{background:#F4F8E6;color:#566A16}
+.gb-badge-i{background:var(--t50);color:var(--t700)}
+.gb-badge-a{background:#FDE9F3;color:#B71F6B}
+.gb-badge-n{background:var(--sunk);color:var(--body)}
+.gb .gb-open{display:inline-flex;align-items:center;white-space:nowrap;font-size:14px;padding:7px 14px;border-radius:999px;background:var(--t50);color:var(--t700);transition:background .15s,color .15s,transform .15s}
+.gb .gb-open:hover{background:var(--t500);color:#fff;text-decoration:none;transform:translateY(-1px)}
+.gb .gb-open-solid{background:var(--t500);color:#fff}
+.gb .gb-open-solid:hover{background:var(--t600)}
+.gb-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gb .gb-chip{font-size:14px;padding:4px 12px;border-radius:999px;border:1.5px solid var(--t100);color:var(--t700);background:#fff;transition:background .15s,border-color .15s}
+.gb .gb-chip:hover{background:var(--t500);border-color:var(--t500);color:#fff;text-decoration:none}
+@media (max-width:560px){.gb-row{grid-template-columns:minmax(0,1fr) auto}.gb-row .gb-text{grid-column:1/-1;grid-row:2}.gb-row-chips,.gb-row-nobtn{grid-template-columns:minmax(0,1fr)}}
+.gb-empty{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.gb-empty h2{font-size:22px}
+.gb [hidden]{display:none!important}
+
+.gb-launch{display:none}
+html.is-embed:not(.is-full) .gb{display:none}
+html.is-embed:not(.is-full) .gb-launch{display:flex}
+.gb-launch{font-family:'Nunito',system-ui,sans-serif;color:#4E483F;min-height:100vh;align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
+.gb-launch-card{width:100%;max-width:760px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.gb-launch h1{font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;color:#1E1B17;margin:0;font-size:clamp(28px,4vw,38px);line-height:1.05;letter-spacing:-.01em}
+.gb-launch p{margin:0;font-size:16px;color:#6B6459}
+.gb-launch-btn{font:inherit;font-weight:800;font-size:17px;padding:13px 26px;border-radius:999px;border:0;cursor:pointer;background:#0093AD;color:#fff;box-shadow:0 8px 20px rgba(0,147,173,.25);transition:background .15s,transform .15s}
+.gb-launch-btn:hover{background:#007A92;transform:translateY(-1px)}
+.gb-launch-btn:active{transform:translateY(1px) scale(.98)}
+.gb-launch-areas{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:6px}
+.gb-launch-areas button{font:inherit;font-weight:800;font-size:14px;padding:7px 14px;border-radius:999px;border:1.5px solid #C2E6EC;background:#fff;color:#006175;cursor:pointer;transition:background .15s,border-color .15s}
+.gb-launch-areas button:hover{background:#E6F4F7;border-color:#0093AD}
+.gb-exit{display:none;position:fixed;top:12px;right:12px;z-index:10;font:inherit;font-family:'Nunito',system-ui,sans-serif;font-weight:800;font-size:14px;padding:8px 16px;border-radius:999px;border:1px solid #E8E4DF;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);color:#006175;cursor:pointer;box-shadow:0 2px 6px rgba(50,46,40,.08)}
+.gb-exit:hover{background:#E6F4F7}
+html.is-full .gb-exit{display:block}
+</style>
+</head>
+<body>
+<div class="gb-launch">
+  <div class="gb-launch-card">
+    <h1>Goal bank</h1>
+    <p>Every goal and packet in one place. Opens full screen so it's easy to browse.</p>
+    <button type="button" class="gb-launch-btn" data-open="">Open the goal bank ⤢</button>
+    <div class="gb-launch-areas"><button type="button" data-open="#speech-sound-goals">Speech Sound</button><button type="button" data-open="#language-goals">Language</button><button type="button" data-open="#social-communication-goals">Social Communication</button><button type="button" data-open="#functional-communication-goals">Functional Communication</button><button type="button" data-open="#fluency-goals">Fluency</button><button type="button" data-open="#voice-resonance-goals">Voice/Resonance</button><button type="button" data-open="#executive-functioning">Executive Functioning</button></div>
+  </div>
+</div>
+<button type="button" class="gb-exit">Exit full screen ×</button>
+<div class="gb" id="slk-hub-goal-bank">
+  <header class="gb-wrap gb-top">
+    <h1>Goal bank</h1>
+    <p class="gb-sub">Find the goal, pick the level, open the packet. <strong>Not sure which level?</strong> Start with the first goal they can't do yet.</p>
+  </header>
+  <div class="gb-wrap gb-layout">
+    <aside class="gb-aside">
+      <div class="gb-panel">
+        <label class="gb-label">Search goals
+          <input type="search" class="gb-search" placeholder="Try /r/, fronting, AAC" autocomplete="off">
+        </label>
+        <div>
+          <div class="gb-label">Level</div>
+          <div class="gb-levels" role="group" aria-label="Filter by level">
+            <button type="button" class="gb-pill" data-level="all" aria-pressed="true">All</button>
+            <button type="button" class="gb-pill" data-level="b" aria-pressed="false">Beginner</button>
+            <button type="button" class="gb-pill" data-level="i" aria-pressed="false">Intermediate</button>
+            <button type="button" class="gb-pill" data-level="a" aria-pressed="false">Advanced</button>
+          </div>
+        </div>
+        <div class="gb-count" aria-live="polite">
+          <span>Showing <strong class="gb-shown">81</strong> of 81 goals</span>
+          <button type="button" class="gb-clear" hidden>Clear</button>
+        </div>
+      </div>
+      <details class="gb-nav" open>
+        <summary>Jump to a skill <span aria-hidden="true">▾</span></summary>
+        <nav aria-label="Goal bank sections">
+          <div class="gb-navgroup" data-area="speech-sound-goals">
+            <a class="gb-navarea" href="#speech-sound-goals">Speech Sound</a>
+            <a class="gb-navitem" href="#articulation" data-cur="articulation">Articulation</a>
+            <a class="gb-navitem" href="#phonology" data-cur="phonology">Phonology</a>
+            <a class="gb-navitem" href="#cycles-phonology" data-cur="cycles-phonology">Cycles Approach to Phonology</a>
+            <a class="gb-navitem" href="#motor-speech" data-cur="motor-speech">Motor Speech</a>
+            <a class="gb-navitem" href="#mumbling" data-cur="mumbling">Mumbling</a>
+          </div>
+          <div class="gb-navgroup" data-area="language-goals">
+            <a class="gb-navarea" href="#language-goals">Language</a>
+            <a class="gb-navitem" href="#following-directions" data-cur="following-directions">Following Directions</a>
+            <a class="gb-navitem" href="#questions" data-cur="questions">Asking &amp; Answering Questions</a>
+            <a class="gb-navitem" href="#sequencing" data-cur="sequencing">Sequencing &amp; Retelling</a>
+            <a class="gb-navitem" href="#grammar" data-cur="grammar">Grammar / Syntax</a>
+            <a class="gb-navitem" href="#literacy" data-cur="literacy">Foundations for Literacy</a>
+            <a class="gb-navitem" href="#abstract-language" data-cur="abstract-language">Abstract Language</a>
+            <a class="gb-navitem" href="#vocabulary" data-cur="vocabulary">Vocabulary</a>
+            <a class="gb-navitem" href="#cycles-language" data-cur="cycles-language">Cycles Approach to Language</a>
+          </div>
+          <div class="gb-navgroup" data-area="social-communication-goals">
+            <a class="gb-navarea" href="#social-communication-goals">Social Communication</a>
+            <a class="gb-navitem" href="#awareness-interaction" data-cur="awareness-interaction">Social Awareness &amp; Interaction</a>
+            <a class="gb-navitem" href="#conversation" data-cur="conversation">Conversational Skills</a>
+            <a class="gb-navitem" href="#regulation-advocacy" data-cur="regulation-advocacy">Emotional Regulation &amp; Self-Advocacy</a>
+            <a class="gb-navitem" href="#mutism" data-cur="mutism">Selective Mutism</a>
+          </div>
+          <div class="gb-navgroup" data-area="functional-communication-goals">
+            <a class="gb-navarea" href="#functional-communication-goals">Functional Communication</a>
+            <a class="gb-navitem" href="#early-interactions" data-cur="early-interactions">Early Interactions</a>
+            <a class="gb-navitem" href="#first-words" data-cur="first-words">First Words</a>
+            <a class="gb-navitem" href="#shaping-echolalia" data-cur="shaping-echolalia">Shaping Echolalia</a>
+            <a class="gb-navitem" href="#aac" data-cur="aac">AAC</a>
+          </div>
+          <div class="gb-navgroup" data-area="fluency-goals">
+            <a class="gb-navarea" href="#fluency-goals">Fluency</a>
+            <a class="gb-navitem" href="#fluency-foundations" data-cur="fluency-foundations">Foundations for Fluency</a>
+            <a class="gb-navitem" href="#stuttering" data-cur="stuttering">Stuttering</a>
+            <a class="gb-navitem" href="#cluttering" data-cur="cluttering">Cluttering</a>
+            <a class="gb-navitem" href="#word-finding" data-cur="word-finding">Word Finding / Word Retrieval</a>
+          </div>
+          <div class="gb-navgroup" data-area="voice-resonance-goals">
+            <a class="gb-navarea" href="#voice-resonance-goals">Voice/Resonance</a>
+            <a class="gb-navitem" href="#voice-foundations" data-cur="voice-foundations">Foundations of Healthy Voice Use</a>
+            <a class="gb-navitem" href="#voice" data-cur="voice">Voice Therapy</a>
+            <a class="gb-navitem" href="#resonance" data-cur="resonance">Resonance (Nasality)</a>
+            <a class="gb-navitem" href="#prosody" data-cur="prosody">Prosody</a>
+          </div>
+          <div class="gb-navgroup" data-area="executive-functioning">
+            <a class="gb-navarea" href="#executive-functioning">Executive Functioning</a>
+            <a class="gb-navitem" href="#executive-functioning-resources" data-cur="executive-functioning-resources">Executive Functioning</a>
+          </div>
+        </nav>
+      </details>
+    </aside>
+    <main class="gb-main">
+      <div class="gb-empty" hidden>
+        <h2>No goals match your search</h2>
+        <p>Try a broader word, like the skill name (“fluency”, “grammar”) or a specific sound.</p>
+        <button type="button" class="gb-pill gb-clear2">Clear search</button>
+      </div>
+      <section class="gb-area" id="speech-sound-goals">
+        <div class="gb-areahead">
+          <div>
+            <h2>Speech sound goals</h2>
+            <div class="gb-areadesc">Saying sounds clearly</div>
+          </div>
+          <a href="https://hub.speechandlanguagekids.com/posts/goal-packets-speech-sound-curriculums" target="_blank" rel="noopener">All Speech Sound packets →</a>
+        </div>
+        <article class="gb-card" id="articulation" style="--acc:#0093AD">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Articulation</h3>
+              <div class="gb-focus">Specific speech sounds</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-articulation-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row gb-row-chips" data-level="b" data-search="speech sound speech sound goals articulation specific speech sounds lisp r sound s sound th l sh ch sound errors distortion substitution articulation curriculum produce early-developing speech sounds (/b, n, m, p, h, w, d/ and vowels) /b/ sound /d/ sound /h/ sound /m/ sound /n/ sound /p/ sound /w/ sound vowel sounds">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><p>Produce early-developing speech sounds (/b, n, m, p, h, w, d/ and vowels)</p>
+                <div class="gb-chips"><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/f8bd1960-800d-44a2-8295-33d0d1e686bd/articulation_-_b_sound.pdf" target="_blank" rel="noopener" title="/b/ Sound packet">/b/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/17e77a62-190b-4990-8547-a4493722b6b8/Articulation_-_d_sound.pdf" target="_blank" rel="noopener" title="/d/ Sound packet">/d/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/2f03346e-8ba2-4fe9-8fb7-eb5b7e484867/articulation_-_h_sound.pdf" target="_blank" rel="noopener" title="/h/ Sound packet">/h/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/2dbc2977-6eed-4621-bdf0-344a00a11fc0/Articulation_-_m_sound.pdf" target="_blank" rel="noopener" title="/m/ Sound packet">/m/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/6af33495-52d2-4d89-a022-64ed8ebf6c25/Articulation_-_n_sound.pdf" target="_blank" rel="noopener" title="/n/ Sound packet">/n/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/3f886ef2-a6e8-4a42-b27d-dd623a52ffa7/articulation_-_p_sound.pdf" target="_blank" rel="noopener" title="/p/ Sound packet">/p/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/8ee98436-8146-4855-a9bc-65d22dd5549b/articulation_-_w_sound.pdf" target="_blank" rel="noopener" title="/w/ Sound packet">/w/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/bc60fa2e-8747-4a07-a584-d8483dc236d4/articulation_-_vowel_sounds.pdf" target="_blank" rel="noopener" title="Vowel Sounds packet">Vowels</a></div>
+              </div>
+            </li>
+            <li class="gb-row gb-row-chips" data-level="i" data-search="speech sound speech sound goals articulation specific speech sounds lisp r sound s sound th l sh ch sound errors distortion substitution articulation curriculum produce mid-developing speech sounds (/g, k, f, t, ng, “y”/) /f/ sound /g/ sound /k/ sound &quot;ng&quot; sound /t/ sound &quot;y&quot; sound">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><p>Produce mid-developing speech sounds (/g, k, f, t, ng, “y”/)</p>
+                <div class="gb-chips"><a class="gb-chip" href="https://media2-production.mightynetworks.com/uploads/44e3feda-b492-4923-9e9b-c9c2bd4749ee/articulation_f_sound_fixed.pdf" target="_blank" rel="noopener" title="/f/ Sound packet">/f/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/uploads/ff9aa03f-32b1-46e9-8f15-94df286b337a/articulation_g_sound_fixed.pdf" target="_blank" rel="noopener" title="/g/ Sound packet">/g/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/9acfa879-a141-4dd4-9779-11ceec8ba22e/articulation_-_k.pdf" target="_blank" rel="noopener" title="/k/ Sound packet">/k/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/1943df71-62c2-497b-8966-40ba94619bc1/Articulation_-_ng.pdf" target="_blank" rel="noopener" title="&quot;ng&quot; Sound packet">ng</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/f2eb18a4-c2b8-49e8-a0d1-49c154836fd1/articulation_-_t_sound.pdf" target="_blank" rel="noopener" title="/t/ Sound packet">/t/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/ed384cd0-caaf-441c-a01e-43e618ed5c01/articulation_-_y_sound.pdf" target="_blank" rel="noopener" title="&quot;y&quot; Sound packet">y</a></div>
+              </div>
+            </li>
+            <li class="gb-row gb-row-chips" data-level="a" data-search="speech sound speech sound goals articulation specific speech sounds lisp r sound s sound th l sh ch sound errors distortion substitution articulation curriculum produce later-developing speech sounds (/v, j, s, ch, l, sh, z, r, “th” voiced and voiceless, zh/) and consonant clusters &quot;ch&quot; sound &quot;j&quot; sound /l/ sound /r/ sound /s/ sound &quot;sh&quot; sound &quot;th&quot; sound /v/ sound /z/ sound consonant blends/clusters">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><p>Produce later-developing speech sounds (/v, j, s, ch, l, sh, z, r, “th” voiced and voiceless, zh/) and consonant clusters</p>
+                <div class="gb-chips"><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/c9334ebe-92d5-46ca-b8d3-b5bf943dcb5c/Articulation_-_ch_sound.pdf" target="_blank" rel="noopener" title="&quot;ch&quot; Sound packet">ch</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/40606ffe-6363-4f55-8113-2424292615e6/articulation_-_j_sound.pdf" target="_blank" rel="noopener" title="&quot;j&quot; Sound packet">j</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/f57d05ba-f602-4085-afe1-a724dfa0abc4/Articulation_-_l_sound.pdf" target="_blank" rel="noopener" title="/l/ Sound packet">/l/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/c6b3a41a-6de6-4288-a72c-9fce43d393cc/articulation_-_r_sound.pdf" target="_blank" rel="noopener" title="/r/ Sound packet">/r/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/d9f01eef-148a-413d-8442-6532fc75e1de/articulation_s_sound.pdf" target="_blank" rel="noopener" title="/s/ Sound packet">/s/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/049ac074-46d2-450b-adb6-c845f220d584/articulation_sh_sound.pdf" target="_blank" rel="noopener" title="&quot;sh&quot; Sound packet">sh</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/9e60ff74-87c9-4733-815b-76691b3c2a64/articulation_-_th_sounds.pdf" target="_blank" rel="noopener" title="&quot;th&quot; Sound packet">th</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/d54adec3-eff4-4300-8d2f-d4ac6c2a72cc/Articulation_-_v_sound.pdf" target="_blank" rel="noopener" title="/v/ Sound packet">/v/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/4a6efec2-fbb2-487c-8c7e-6cdaf527ae76/articulation_-_z_sound.pdf" target="_blank" rel="noopener" title="/z/ Sound packet">/z/</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/57534da1-2ec8-426f-bc29-2025bdd2ff3e/articulation_-_consonant_blends.pdf" target="_blank" rel="noopener" title="Consonant Blends/Clusters packet">Blends/Clusters</a></div>
+              </div>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="phonology" style="--acc:#0093AD">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Phonology</h3>
+              <div class="gb-focus">Error patterns (phonological processes)</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-phonology-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row gb-row-chips" data-level="b" data-search="speech sound speech sound goals phonology error patterns (phonological processes) phonological processes fronting stopping gliding cluster reduction final consonant deletion phonology curriculum eliminate initial consonant deletion, final consonant deletion, and unstressed syllable deletion final consonant deletion initial consonant deletion unstressed syllable deletion">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><p>Eliminate initial consonant deletion, final consonant deletion, and unstressed syllable deletion</p>
+                <div class="gb-chips"><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/23609fdf-6b3a-42fd-9bf5-c7802a33ac1b/Phonology_-_final_consonant_deletion.pdf" target="_blank" rel="noopener" title="Final Consonant Deletion packet">Final Consonant Deletion</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/a0d34689-6012-450d-8ec2-d0d6a8d5c2c8/phonology_-_initial_consonant_deletion.pdf" target="_blank" rel="noopener" title="Initial Consonant Deletion packet">Initial Consonant Deletion</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/38b0abd0-d0c9-4d12-97d0-d7a23c069c8e/Phonology_-_unstressed_syllable_deletion.pdf" target="_blank" rel="noopener" title="Unstressed Syllable Deletion packet">Unstressed Syllable Deletion</a></div>
+              </div>
+            </li>
+            <li class="gb-row gb-row-chips" data-level="i" data-search="speech sound speech sound goals phonology error patterns (phonological processes) phonological processes fronting stopping gliding cluster reduction final consonant deletion phonology curriculum eliminate velar fronting, backing, stopping of fricatives, and cluster reduction velar fronting backing stopping of fricatives cluster reduction">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><p>Eliminate velar fronting, backing, stopping of fricatives, and cluster reduction</p>
+                <div class="gb-chips"><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/ce962ef4-84eb-4049-8d0a-dd7c6107e5d0/Phonology_-_velar_fronting.pdf" target="_blank" rel="noopener" title="Velar Fronting packet">Velar Fronting</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/b9e9c20c-9421-49f3-9726-23a0252d2107/Phonology_-_backing.pdf" target="_blank" rel="noopener" title="Backing packet">Backing</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/54a628d4-c716-479b-842e-3717c3820e39/Phonology_-_stopping_of_fricatives.pdf" target="_blank" rel="noopener" title="Stopping of Fricatives packet">Stopping of Fricatives</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/f4718693-77f5-4c53-bb53-ec32dc2d20e7/Phonology_-_cluster_reduction.pdf" target="_blank" rel="noopener" title="Cluster Reduction packet">Cluster Reduction</a></div>
+              </div>
+            </li>
+            <li class="gb-row gb-row-chips" data-level="a" data-search="speech sound speech sound goals phonology error patterns (phonological processes) phonological processes fronting stopping gliding cluster reduction final consonant deletion phonology curriculum eliminate gliding of liquids, prevocalic voicing, and postvocalic devoicing gliding of liquids prevocalic voicing postvocalic devoicing">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><p>Eliminate gliding of liquids, prevocalic voicing, and postvocalic devoicing</p>
+                <div class="gb-chips"><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/62459568-6f01-461c-8d81-90cbdedb9297/Phonology_-_gliding_of_liquids.pdf" target="_blank" rel="noopener" title="Gliding of Liquids packet">Gliding of Liquids</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/f780ee5f-a41f-4b26-bf74-093be54f5e11/phonology_-_prevocalic_voicing.pdf" target="_blank" rel="noopener" title="Prevocalic Voicing packet">Prevocalic Voicing</a><a class="gb-chip" href="https://media2-production.mightynetworks.com/asset/2d5a76e3-bef1-49c0-9ff5-63aff0fea90c/Phonology_-_postvocalic_devoicing.pdf" target="_blank" rel="noopener" title="Postvocalic Devoicing packet">Postvocalic Devoicing</a></div>
+              </div>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="cycles-phonology" style="--acc:#0093AD">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Cycles Approach to Phonology</h3>
+              <div class="gb-focus">Materials kit for the cycles approach</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-cycles-approach-to-phonology" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="all" data-search="speech sound speech sound goals cycles approach to phonology materials kit for the cycles approach cycles hodson phonology phonological processes cycles approach to phonology cycles approach materials kit">
+              <span class="gb-badge gb-badge-n">All levels</span>
+              <div class="gb-text"><div class="gb-title">Cycles Approach Materials Kit</div></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/61485efa-5898-404c-80da-0613f0efc086/Cycles_Approach_Materials_Kit.pdf" target="_blank" rel="noopener">Open kit</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="motor-speech" style="--acc:#0093AD">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Motor Speech</h3>
+              <div class="gb-focus">Motor planning for speech sounds</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-motor-speech-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="speech sound speech sound goals motor speech motor planning for speech sounds apraxia childhood apraxia of speech cas dysarthria motor planning motor speech curriculum produce cv, vc, and cvc word structures cv, vc, cvc words">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">CV, VC, CVC Words</div><p>Produce CV, VC, and CVC word structures</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/d218894e-4958-465c-b9a5-110a63e79dd7/Motor_Speech_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Motor Speech packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="speech sound speech sound goals motor speech motor planning for speech sounds apraxia childhood apraxia of speech cas dysarthria motor planning motor speech curriculum produce expanded word structures (cvcv, ccvc) and/or combine words into two- to three-word utterances expanded word structures and utterance length">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Expanded Word Structures and Utterance Length</div><p>Produce expanded word structures (CVCV, CCVC) and/or combine words into two- to three-word utterances</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/3ecb471c-5a0f-4208-bc2f-163a823f9a19/Motor_Speech_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Motor Speech packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="speech sound speech sound goals motor speech motor planning for speech sounds apraxia childhood apraxia of speech cas dysarthria motor planning motor speech curriculum improve speech intelligibility and fluidity coordination and connected speech">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Coordination and Connected Speech</div><p>Improve speech intelligibility and fluidity</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/7f5ece08-624d-427b-86b3-cba2965d6ff5/Motor_Speech_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Motor Speech packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="mumbling" style="--acc:#0093AD">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Mumbling</h3>
+              <div class="gb-focus">Clarity for mumbled or slurred speech</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-mumbling-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="speech sound speech sound goals mumbling clarity for mumbled or slurred speech intelligibility slurred unclear speech clarity over-articulation mumbling curriculum use intentional over-articulation (exaggerated speech clarity) in sentences over-articulation in structured tasks">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Over-Articulation in Structured Tasks</div><p>Use intentional over-articulation (exaggerated speech clarity) in sentences</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/8a4b549c-ec65-42f1-a3b4-da1509208236/Mumbling_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Mumbling packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="speech sound speech sound goals mumbling clarity for mumbled or slurred speech intelligibility slurred unclear speech clarity over-articulation mumbling curriculum over-articulate every sound in conversation when prompted speaking clearly in structured conversation">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Speaking Clearly in Structured Conversation</div><p>Over-articulate every sound in conversation when prompted</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/aa786c7d-efb8-430d-b87d-112adfe7b5c4/Mumbling_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Mumbling packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="speech sound speech sound goals mumbling clarity for mumbled or slurred speech intelligibility slurred unclear speech clarity over-articulation mumbling curriculum speak clearly and recognize when the other person is confused and clarify self-correcting intelligibility in conversation">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Self-Correcting Intelligibility in Conversation</div><p>Speak clearly and recognize when the other person is confused and clarify</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/57927822-27b0-40a6-926b-e9016952f9e3/Mumbling_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Mumbling packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+      <section class="gb-area" id="language-goals">
+        <div class="gb-areahead">
+          <div>
+            <h2>Language goals</h2>
+            <div class="gb-areadesc">Understanding and using words and sentences</div>
+          </div>
+          <a href="https://hub.speechandlanguagekids.com/posts/goal-packets-language-curriculum" target="_blank" rel="noopener">All Language packets →</a>
+        </div>
+        <article class="gb-card" id="following-directions" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Following Directions</h3>
+              <div class="gb-focus">Understanding multi-step directions</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-following-directions-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="language language goals following directions understanding multi-step directions receptive language directions spatial concepts basic concepts following directions curriculum follow 1–2 step directions with basic actions and spatial concepts following basic directions">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Following Basic Directions</div><p>Follow 1–2 step directions with basic actions and spatial concepts</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/c962d0d3-7003-4fda-a5e4-3cbb7f97ce97/Following_Directions_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Following Directions packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="language language goals following directions understanding multi-step directions receptive language directions spatial concepts basic concepts following directions curriculum follow multi-step and non-routine directions following expanded directions">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Following Expanded Directions</div><p>Follow multi-step and non-routine directions</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/1de6d7a8-6a6d-4fa0-b3a5-49d6773ed7a2/Following_Directions_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Following Directions packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="language language goals following directions understanding multi-step directions receptive language directions spatial concepts basic concepts following directions curriculum follow multi-step directions for classroom activities and real-life tasks following functional/academic directions">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Following Functional/Academic Directions</div><p>Follow multi-step directions for classroom activities and real-life tasks</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/153a4c80-5cdc-4ce6-bdab-c40b1548ca90/Following_Directions_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Following Directions packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="questions" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Asking &amp; Answering Questions</h3>
+              <div class="gb-focus">Yes/no and wh- questions</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-asking-and-answering-questions-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="language language goals asking &amp; answering questions yes/no and wh- questions wh questions who what where when why yes no questions asking and answering questions curriculum answer yes/no and wh- questions, one question type at a time answering yes/no and wh- questions">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Answering Yes/No and Wh- Questions</div><p>Answer yes/no and wh- questions, one question type at a time</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/61f956f2-0ee9-464b-8169-2f79ed84244a/Asking_and_Answering_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Asking &amp; Answering Questions packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="language language goals asking &amp; answering questions yes/no and wh- questions wh questions who what where when why yes no questions asking and answering questions curriculum ask and answer a variety of yes/no and wh- questions in conversation asking and answering mixed questions">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Asking and Answering Mixed Questions</div><p>Ask and answer a variety of yes/no and wh- questions in conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/e5a527e1-eb80-4c21-8e9a-c3def48e486b/Asking_and_Answering_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Asking &amp; Answering Questions packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="language language goals asking &amp; answering questions yes/no and wh- questions wh questions who what where when why yes no questions asking and answering questions curriculum ask and answer questions in academic tasks, social interactions, and daily routines using questions in daily activities and classwork">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Using Questions in Daily Activities and Classwork</div><p>Ask and answer questions in academic tasks, social interactions, and daily routines</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/26f0ca68-0323-47c0-bbc6-8ad0ce0662b3/Asking_and_Answering_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Asking &amp; Answering Questions packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="sequencing" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Sequencing &amp; Retelling</h3>
+              <div class="gb-focus">Retelling events with clear structure</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-sequencing-and-retelling-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="language language goals sequencing &amp; retelling retelling events with clear structure narrative story retell sequencing beginning middle end sequencing and retelling curriculum sequence and retell the steps of a familiar task sequencing and retelling common tasks">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Sequencing and Retelling Common Tasks</div><p>Sequence and retell the steps of a familiar task</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/8704e4a8-9e89-41b3-a3c5-e8224b4c5937/Sequencing_and_Retelling_-_Beginner_Goal_Packet.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Sequencing &amp; Retelling packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="language language goals sequencing &amp; retelling retelling events with clear structure narrative story retell sequencing beginning middle end sequencing and retelling curriculum retell a past event with a clear beginning, middle, and end retelling past events">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Retelling Past Events</div><p>Retell a past event with a clear beginning, middle, and end</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/fab8ce36-a838-4e25-803d-23ba83b96281/Sequencing_and_Retelling_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Sequencing &amp; Retelling packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="language language goals sequencing &amp; retelling retelling events with clear structure narrative story retell sequencing beginning middle end sequencing and retelling curriculum retell a narrative or academic event with clear structure, sequencing, and temporal concepts using sequencing and retelling in classwork">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Using Sequencing and Retelling in Classwork</div><p>Retell a narrative or academic event with clear structure, sequencing, and temporal concepts</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/fdb4bb30-059f-48e4-b70b-9aeceddc0df3/Sequencing_and_Retelling_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Sequencing &amp; Retelling packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="grammar" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Grammar / Syntax</h3>
+              <div class="gb-focus">Correct sentences through complex structures</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-grammarsyntax-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="language language goals grammar / syntax correct sentences through complex structures syntax morphology pronouns plurals past tense verbs sentence structure expressive language grammar/syntax curriculum produce simple, grammatically correct sentences in conversation foundational grammar skills">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Foundational Grammar Skills</div><p>Produce simple, grammatically correct sentences in conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/09fd4ff9-8de2-4873-9e2a-07b54d1accef/Grammar_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Grammar / Syntax packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="language language goals grammar / syntax correct sentences through complex structures syntax morphology pronouns plurals past tense verbs sentence structure expressive language grammar/syntax curriculum produce grammatically correct compound and complex sentences in conversation expanding sentence complexity">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Expanding Sentence Complexity</div><p>Produce grammatically correct compound and complex sentences in conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/a025425a-bb29-4160-afb6-d2d9fd06216e/Grammar_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Grammar / Syntax packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="language language goals grammar / syntax correct sentences through complex structures syntax morphology pronouns plurals past tense verbs sentence structure expressive language grammar/syntax curriculum master grade-appropriate grammar/syntax in speaking and writing mastering grammar for effective communication">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Mastering Grammar for Effective Communication</div><p>Master grade-appropriate grammar/syntax in speaking and writing</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/d9ee304f-1898-4fc0-bf96-6bd44bd9c5ae/Grammar_advanced_goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Grammar / Syntax packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="literacy" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Foundations for Literacy</h3>
+              <div class="gb-focus">Phonological awareness, narrative, critical thinking</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-foundations-for-literacy-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="language language goals foundations for literacy phonological awareness, narrative, critical thinking reading phonological awareness rhyming story grammar main idea compare contrast language for literacy foundations for literacy curriculum foundational literacy: phonological awareness, basic story structure, and sequencing pre-literacy foundations">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Pre-Literacy Foundations</div><p>Foundational literacy: phonological awareness, basic story structure, and sequencing</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/2dbcbbce-4b58-4d10-b42f-1a58e0bbe612/Literacy_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Foundations for Literacy packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="language language goals foundations for literacy phonological awareness, narrative, critical thinking reading phonological awareness rhyming story grammar main idea compare contrast language for literacy foundations for literacy curriculum understand and use discourse structures: narrative, informational, opinion understanding and using discourse structures">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Understanding and Using Discourse Structures</div><p>Understand and use discourse structures: narrative, informational, opinion</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/d0bfae63-787b-4fea-9b1e-70968f63d03c/Literacy_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Foundations for Literacy packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="language language goals foundations for literacy phonological awareness, narrative, critical thinking reading phonological awareness rhyming story grammar main idea compare contrast language for literacy foundations for literacy curriculum critical thinking: inferences, abstract language, comparing perspectives, graphic organizers critical thinking for reading and writing">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Critical Thinking for Reading and Writing</div><p>Critical thinking: inferences, abstract language, comparing perspectives, graphic organizers</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/45ad6d48-165b-47b2-b0bc-0dce73ad143c/Literacy_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Foundations for Literacy packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="abstract-language" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Abstract Language</h3>
+              <div class="gb-focus">Figurative language, sarcasm, idioms, inferencing</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-abstract-language-curriculum-80593877" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="language language goals abstract language figurative language, sarcasm, idioms, inferencing figurative language idioms similes metaphors sarcasm inferences inferencing abstract language curriculum identify if statements are literal or nonliteral literal vs. nonliteral">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Literal vs. Nonliteral</div><p>Identify if statements are literal or nonliteral</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/5cecf89a-a76b-4911-9ff3-2088443c4b3c/Abstract_Language_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Abstract Language packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="language language goals abstract language figurative language, sarcasm, idioms, inferencing figurative language idioms similes metaphors sarcasm inferences inferencing abstract language curriculum explain the nonliteral meaning of an idiom, simile, or metaphor in context figurative language">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Figurative Language</div><p>Explain the nonliteral meaning of an idiom, simile, or metaphor in context</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/e3b55a83-b57d-4f75-b2b4-9f91d760e1ff/Abstract_Language_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Abstract Language packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="language language goals abstract language figurative language, sarcasm, idioms, inferencing figurative language idioms similes metaphors sarcasm inferences inferencing abstract language curriculum make inferences about text or social scenarios inferencing and social nuance">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Inferencing and Social Nuance</div><p>Make inferences about text or social scenarios</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/c3f7a46d-fd54-45e3-a609-e5c2c02ab37e/Abstract_Language_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Abstract Language packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="vocabulary" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Vocabulary</h3>
+              <div class="gb-focus">Functional and academic vocabulary</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-vocabulary-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="language language goals vocabulary functional and academic vocabulary categories describing synonyms antonyms multiple meaning words context clues prefixes suffixes vocabulary curriculum functional use of a core vocabulary of at least 50 words building a core vocabulary">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Building a Core Vocabulary</div><p>Functional use of a core vocabulary of at least 50 words</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/691c76a1-5d1c-4444-8c75-7db5993cc653/Vocabulary_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Vocabulary packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="language language goals vocabulary functional and academic vocabulary categories describing synonyms antonyms multiple meaning words context clues prefixes suffixes vocabulary curriculum use a variety of words to describe, categorize, and express ideas increasing word knowledge and usage">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Increasing Word Knowledge and Usage</div><p>Use a variety of words to describe, categorize, and express ideas</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/4edf0603-0be5-425b-bc6e-29229c813440/Vocabulary_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Vocabulary packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="language language goals vocabulary functional and academic vocabulary categories describing synonyms antonyms multiple meaning words context clues prefixes suffixes vocabulary curriculum use word-learning strategies (affixes, context clues, synonyms, multiple meanings) to work out new words academic vocabulary and independent word learning">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Academic Vocabulary and Independent Word Learning</div><p>Use word-learning strategies (affixes, context clues, synonyms, multiple meanings) to work out new words</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/59e8fb00-6547-4103-ba06-99e909b015a9/Vocabulary_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Vocabulary packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="cycles-language" style="--acc:#EF4E9C">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Cycles Approach to Language</h3>
+              <div class="gb-focus">Core Language Program workbooks</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-cycles-approach-to-language-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="all" data-search="language language goals cycles approach to language core language program workbooks cycles core language program workbooks cycles approach to language curriculum core language program workbooks">
+              <span class="gb-badge gb-badge-n">All levels</span>
+              <div class="gb-text"><div class="gb-title">Core Language Program Workbooks</div></div>
+              <a class="gb-open" href="https://hub.speechandlanguagekids.com/spaces/21123060" target="_blank" rel="noopener">Open</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+      <section class="gb-area" id="social-communication-goals">
+        <div class="gb-areahead">
+          <div>
+            <h2>Social communication goals</h2>
+            <div class="gb-areadesc">Connecting and interacting with others</div>
+          </div>
+          <a href="https://hub.speechandlanguagekids.com/posts/goal-packets-social-communication-curriculum" target="_blank" rel="noopener">All Social Communication packets →</a>
+        </div>
+        <article class="gb-card" id="awareness-interaction" style="--acc:#E2483D">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Social Awareness &amp; Interaction</h3>
+              <div class="gb-focus">Responding, perspectives, engaging socially</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-social-awareness-and-interaction-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="social communication social communication goals social awareness &amp; interaction responding, perspectives, engaging socially pragmatics perspective taking theory of mind peers autism social skills social awareness and interaction curriculum acknowledge greetings, respond to name, and share joint attention and turn taking building social awareness">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Building Social Awareness</div><p>Acknowledge greetings, respond to name, and share joint attention and turn taking</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/625348b7-2bdb-4334-b905-411258491460/Social_awareness_-_beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Social Awareness &amp; Interaction packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="social communication social communication goals social awareness &amp; interaction responding, perspectives, engaging socially pragmatics perspective taking theory of mind peers autism social skills social awareness and interaction curriculum engage in a short interaction with a peer with reciprocal conversational turns strengthening social engagement">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Strengthening Social Engagement</div><p>Engage in a short interaction with a peer with reciprocal conversational turns</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/dc5b060d-88ed-4897-ac96-8a9a6e382491/Social_Awareness_-_intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Social Awareness &amp; Interaction packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="social communication social communication goals social awareness &amp; interaction responding, perspectives, engaging socially pragmatics perspective taking theory of mind peers autism social skills social awareness and interaction curriculum recognize that others have differing thoughts and perspectives, and use this in social situations perspective-taking and social understanding">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Perspective-Taking and Social Understanding</div><p>Recognize that others have differing thoughts and perspectives, and use this in social situations</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/12948c6c-e529-427c-9879-de6a28675b02/social_awareness_-_advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Social Awareness &amp; Interaction packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="conversation" style="--acc:#E2483D">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Conversational Skills</h3>
+              <div class="gb-focus">Initiating, maintaining, navigating conversations</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-conversational-skills-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="social communication social communication goals conversational skills initiating, maintaining, navigating conversations pragmatics topic maintenance staying on topic initiating conversation social skills conversational skills curriculum initiate an interaction with a peer and/or respond to a peer initiating and responding in conversations">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Initiating and Responding in Conversations</div><p>Initiate an interaction with a peer and/or respond to a peer</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/uploads/a23500f0-523c-4f96-80d4-4b9c99b24068/Conversation_beginner_with_Initiating_Interactions.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Conversational Skills packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="social communication social communication goals conversational skills initiating, maintaining, navigating conversations pragmatics topic maintenance staying on topic initiating conversation social skills conversational skills curriculum hold a 10-minute peer conversation, staying on topic with at least 4 exchanges per topic maintaining conversations and topic management">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Maintaining Conversations and Topic Management</div><p>Hold a 10-minute peer conversation, staying on topic with at least 4 exchanges per topic</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/3d4e2773-8fa1-496b-914f-9fc8c5e4b1e3/conversation_-_intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Conversational Skills packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="social communication social communication goals conversational skills initiating, maintaining, navigating conversations pragmatics topic maintenance staying on topic initiating conversation social skills conversational skills curriculum navigate complex conversations: disagreements, breakdowns, and self-advocacy navigating complex conversations">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Navigating Complex Conversations</div><p>Navigate complex conversations: disagreements, breakdowns, and self-advocacy</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/30669320-20c4-47c7-b284-2c9b5fd0856e/conversation_-_advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Conversational Skills packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="regulation-advocacy" style="--acc:#E2483D">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Emotional Regulation &amp; Self-Advocacy</h3>
+              <div class="gb-focus">Needs, emotions, and advocating for yourself</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-emotional-regulation-self-advocacy-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="social communication social communication goals emotional regulation &amp; self-advocacy needs, emotions, and advocating for yourself emotions feelings coping strategies behavior self advocacy asking for help emotional regulation &amp; self-advocacy curriculum communicate needs and feelings with less reliance on challenging behaviors replacing challenging behaviors with communication">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Replacing Challenging Behaviors with Communication</div><p>Communicate needs and feelings with less reliance on challenging behaviors</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/d93f2617-08b6-4bc1-b816-adaf2e9d9038/Regulation___Advocacy_-_Beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Emotional Regulation &amp; Self-Advocacy packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="social communication social communication goals emotional regulation &amp; self-advocacy needs, emotions, and advocating for yourself emotions feelings coping strategies behavior self advocacy asking for help emotional regulation &amp; self-advocacy curriculum label their own emotions and select coping strategies to regulate them emotional understanding and self-calming">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Emotional Understanding and Self-Calming</div><p>Label their own emotions and select coping strategies to regulate them</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/b12a0600-f34b-415e-a78f-9d68b9fce549/regulation___advocacy_-_Intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Emotional Regulation &amp; Self-Advocacy packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="social communication social communication goals emotional regulation &amp; self-advocacy needs, emotions, and advocating for yourself emotions feelings coping strategies behavior self advocacy asking for help emotional regulation &amp; self-advocacy curriculum self-advocate: make choices, ask for help or clarification, say what they don’t want self-advocacy and proactive regulation">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Self-Advocacy and Proactive Regulation</div><p>Self-advocate: make choices, ask for help or clarification, say what they don’t want</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/b81035c2-75bc-4517-b992-a002e9c9198b/Regulation___Advocacy_-_Advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Emotional Regulation &amp; Self-Advocacy packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="mutism" style="--acc:#E2483D">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Selective Mutism</h3>
+              <div class="gb-focus">Speaks in some situations but not others</div>
+            </div>
+            <div class="gb-headlinks"><a class="gb-open gb-open-solid" href="https://media2-production.mightynetworks.com/asset/dd26d9d4-5fd0-4903-9e36-f8f30a180b37/Selective_Mutism_-_all_levels.pdf" target="_blank" rel="noopener">Open packet (all levels)</a><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-selective-mutism-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row gb-row-nobtn" data-level="b" data-search="social communication social communication goals selective mutism speaks in some situations but not others selective mutism anxiety not talking at school selective mutism curriculum environmental modifications to build control and reduce anxiety about speaking">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><p>Environmental modifications to build control and reduce anxiety about speaking</p></div>
+            </li>
+            <li class="gb-row gb-row-nobtn" data-level="i" data-search="social communication social communication goals selective mutism speaks in some situations but not others selective mutism anxiety not talking at school selective mutism curriculum identify three reasons to speak and three relaxation techniques for anxious moments">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><p>Identify three reasons to speak and three relaxation techniques for anxious moments</p></div>
+            </li>
+            <li class="gb-row gb-row-nobtn" data-level="a" data-search="social communication social communication goals selective mutism speaks in some situations but not others selective mutism anxiety not talking at school selective mutism curriculum increase ability to communicate in more challenging situations">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><p>Increase ability to communicate in more challenging situations</p></div>
+            </li>
+          </ul>
+        </article>
+      </section>
+      <section class="gb-area" id="functional-communication-goals">
+        <div class="gb-areahead">
+          <div>
+            <h2>Functional communication goals</h2>
+            <div class="gb-areadesc">Getting wants and needs across</div>
+          </div>
+          <a href="https://hub.speechandlanguagekids.com/posts/goal-packets-functional-communication-curriculums" target="_blank" rel="noopener">All Functional Communication packets →</a>
+        </div>
+        <article class="gb-card" id="early-interactions" style="--acc:#ADD037">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Early Interactions</h3>
+              <div class="gb-focus">Basic social engagement and responding</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-early-interactions-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="functional communication functional communication goals early interactions basic social engagement and responding joint attention turn taking toddler early intervention responding to name early interactions curriculum respond to name, share joint attention, and take turns building awareness and engagement">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Building Awareness and Engagement</div><p>Respond to name, share joint attention, and take turns</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/472a98c9-3ba5-45c4-848a-2a9621324f93/Early_Interactions_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Early Interactions packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="functional communication functional communication goals early interactions basic social engagement and responding joint attention turn taking toddler early intervention responding to name early interactions curriculum follow directions, answer questions, and make choices understanding and responding to communication">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Understanding and Responding to Communication</div><p>Follow directions, answer questions, and make choices</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/a5689c0a-b509-443e-add1-d7bd2d32ee50/Early_Interactions_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Early Interactions packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="functional communication functional communication goals early interactions basic social engagement and responding joint attention turn taking toddler early intervention responding to name early interactions curriculum initiate and maintain interactions with others expanding social participation and interaction">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Expanding Social Participation and Interaction</div><p>Initiate and maintain interactions with others</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/53443684-d0ab-4191-8f2c-04e293eca525/Early_Interactions_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Early Interactions packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="first-words" style="--acc:#ADD037">
+          <div class="gb-cardhead">
+            <div>
+              <h3>First Words</h3>
+              <div class="gb-focus">For analytic language processors (ALPs)</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-first-words-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="functional communication functional communication goals first words for analytic language processors (alps) late talker toddler first words alp early intervention two word first words curriculum indirect strategies (modeling) to encourage spoken communication encouraging first words">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Encouraging First Words</div><p>Indirect strategies (modeling) to encourage spoken communication</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/66f6b340-2803-4a59-9718-3b3addfac410/First_Words_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner First Words packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="functional communication functional communication goals first words for analytic language processors (alps) late talker toddler first words alp early intervention two word first words curriculum speak cv, vc, and cvc words for functional communication first words with early word shapes">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">First Words with Early Word Shapes</div><p>Speak CV, VC, and CVC words for functional communication</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/a554991d-8cab-4988-b34d-26c8b41d82fe/First_Words_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate First Words packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="functional communication functional communication goals first words for analytic language processors (alps) late talker toddler first words alp early intervention two word first words curriculum speak 2-word combinations expanding vocabulary and combining words">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Expanding Vocabulary and Combining Words</div><p>Speak 2-word combinations</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/69e6a210-c314-431f-9949-feaf03a60b61/First_Words_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced First Words packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="shaping-echolalia" style="--acc:#ADD037">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Shaping Echolalia</h3>
+              <div class="gb-focus">For gestalt language processors (GLPs)</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-shaping-echolalia-curriculum-for-gestalt-language-processors" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="functional communication functional communication goals shaping echolalia for gestalt language processors (glps) echolalia gestalt language processing glp scripts autism shaping echolalia curriculum (for gestalt language processors) communicate using at least 5 different gestalts using early gestalts">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Using Early Gestalts</div><p>Communicate using at least 5 different gestalts</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/c495e208-e10e-480d-96c1-13119ad5bd64/Shaping_Echolalia_-_Beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Shaping Echolalia packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="functional communication functional communication goals shaping echolalia for gestalt language processors (glps) echolalia gestalt language processing glp scripts autism shaping echolalia curriculum (for gestalt language processors) communicate using shorter or mixed-and-matched gestalts using mitigated gestalts">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Using Mitigated Gestalts</div><p>Communicate using shorter or mixed-and-matched gestalts</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/1ba69e29-8cc7-47cc-8695-05a1d70846ae/Shaping_Echolalia_-_Intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Shaping Echolalia packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="functional communication functional communication goals shaping echolalia for gestalt language processors (glps) echolalia gestalt language processing glp scripts autism shaping echolalia curriculum (for gestalt language processors) communicate using single-word and two-word utterances developing self-generated language">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Developing Self-Generated Language</div><p>Communicate using single-word and two-word utterances</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/8d299ac6-4e41-4fbc-adcd-2a85caefbecb/Shaping_Echolalia_-_Advanced_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Shaping Echolalia packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="aac" style="--acc:#ADD037">
+          <div class="gb-cardhead">
+            <div>
+              <h3>AAC</h3>
+              <div class="gb-focus">Sign language, pictures, and speech devices</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-augmentative-alternative-communication-aac-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="functional communication functional communication goals aac sign language, pictures, and speech devices augmentative alternative communication device sign language pecs nonspeaking non-speaking core words augmentative &amp; alternative communication (aac) curriculum communicate anything using an aac device or system (or spoken language) using aac for basic communication">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Using AAC for Basic Communication</div><p>Communicate anything using an AAC device or system (or spoken language)</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/e7fd511d-da00-420f-a29e-f9f0647b3c88/AAC_-_Beginner_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner AAC packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="functional communication functional communication goals aac sign language, pictures, and speech devices augmentative alternative communication device sign language pecs nonspeaking non-speaking core words augmentative &amp; alternative communication (aac) curriculum express a variety of communicative intents (rejection, recurrence, actions, attributes, possession, etc.) expanding aac use to different communicative functions">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Expanding AAC Use to Different Communicative Functions</div><p>Express a variety of communicative intents (rejection, recurrence, actions, attributes, possession, etc.)</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/66f569ea-d633-4979-a911-a65311791b00/AAC_-_Intermediate_Goal.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate AAC packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="functional communication functional communication goals aac sign language, pictures, and speech devices augmentative alternative communication device sign language pecs nonspeaking non-speaking core words augmentative &amp; alternative communication (aac) curriculum produce 2-word combinations to comment, ask, or respond using aac for expanded utterances">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Using AAC for Expanded Utterances</div><p>Produce 2-word combinations to comment, ask, or respond</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/3300cff9-2cfb-4f7b-8b4a-1cbe091008d4/AAC_-_Advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced AAC packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+      <section class="gb-area" id="fluency-goals">
+        <div class="gb-areahead">
+          <div>
+            <h2>Fluency goals</h2>
+            <div class="gb-areadesc">Smooth, easy talking</div>
+          </div>
+          <a href="https://hub.speechandlanguagekids.com/posts/goal-packets-fluency-curriculums" target="_blank" rel="noopener">All Fluency packets →</a>
+        </div>
+        <article class="gb-card" id="fluency-foundations" style="--acc:#EAA23B">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Foundations for Fluency</h3>
+              <div class="gb-focus">Breathing and reactions to stuttering</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-foundations-for-fluency-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="fluency fluency goals foundations for fluency breathing and reactions to stuttering stuttering stammering breathing feelings attitudes foundations for fluency curriculum use diaphragmatic breathing during spontaneous conversation breath-speech coordination">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Breath-Speech Coordination</div><p>Use diaphragmatic breathing during spontaneous conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/69dadef2-0dba-4105-8cb0-b25a4ed76ec5/Foundations_for_fluency_-_beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Foundations for Fluency packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="fluency fluency goals foundations for fluency breathing and reactions to stuttering stuttering stammering breathing feelings attitudes foundations for fluency curriculum increase self-awareness of stuttering and manage emotional reactions to it in guided activities managing reactions to fluency struggles">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Managing Reactions to Fluency Struggles</div><p>Increase self-awareness of stuttering and manage emotional reactions to it in guided activities</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/1e635e1b-8ff0-4d60-ba21-e94bb2751856/foundations_for_fluency_-_intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Foundations for Fluency packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="fluency fluency goals foundations for fluency breathing and reactions to stuttering stuttering stammering breathing feelings attitudes foundations for fluency curriculum demonstrate self-monitoring and carry-over of fluency strategies self-monitoring and carryover of fluency strategies">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Self-Monitoring and Carryover of Fluency Strategies</div><p>Demonstrate self-monitoring and carry-over of fluency strategies</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/dc16e8e4-8da5-4849-a1ef-d0eefa4b97d8/foundations_for_fluency_-_advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Foundations for Fluency packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="stuttering" style="--acc:#EAA23B">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Stuttering</h3>
+              <div class="gb-focus">Repetitions, prolongations, and blocks</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-stuttering-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="fluency fluency goals stuttering repetitions, prolongations, and blocks stammering disfluency dysfluency fluency shaping stuttering modification blocks repetitions stuttering curriculum demonstrate fast and slow speech as well as bumpy and slow speech indirect strategies for young children who stutter">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Indirect Strategies for Young Children who Stutter</div><p>Demonstrate fast and slow speech as well as bumpy and slow speech</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/d8eba9cd-65bd-4ae2-9469-ff9f3da3fc61/Stuttering_-_beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Stuttering packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="fluency fluency goals stuttering repetitions, prolongations, and blocks stammering disfluency dysfluency fluency shaping stuttering modification blocks repetitions stuttering curriculum use fluency shaping strategies in structured conversation fluency shaping techniques">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Fluency Shaping Techniques</div><p>Use fluency shaping strategies in structured conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/d7adee5f-67d8-4d83-8f1b-e9641100d7dd/Stuttering_-_intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Stuttering packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="fluency fluency goals stuttering repetitions, prolongations, and blocks stammering disfluency dysfluency fluency shaping stuttering modification blocks repetitions stuttering curriculum use stuttering modification techniques in structured conversation stuttering modification strategies">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Stuttering Modification Strategies</div><p>Use stuttering modification techniques in structured conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/f5b85f5b-3b62-4b9e-b53b-e5018c264f52/Stuttering_-_advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Stuttering packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="cluttering" style="--acc:#EAA23B">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Cluttering</h3>
+              <div class="gb-focus">Rapid, disorganized, hard-to-follow speech</div>
+            </div>
+            <div class="gb-headlinks"><a class="gb-open gb-open-solid" href="https://media2-production.mightynetworks.com/asset/f018d7b9-55e2-482f-a5c5-e3608f67505c/cluttering_-_all_levels.pdf" target="_blank" rel="noopener">Open packet (all levels)</a><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-cluttering-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row gb-row-nobtn" data-level="b" data-search="fluency fluency goals cluttering rapid, disorganized, hard-to-follow speech fast rate rapid speech disorganized communication breakdown cluttering curriculum demonstrate cluttering strategies for slow, clear speech">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><p>Demonstrate cluttering strategies for slow, clear speech</p></div>
+            </li>
+            <li class="gb-row gb-row-nobtn" data-level="i" data-search="fluency fluency goals cluttering rapid, disorganized, hard-to-follow speech fast rate rapid speech disorganized communication breakdown cluttering curriculum understand and identify communication breakdowns">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><p>Understand and identify communication breakdowns</p></div>
+            </li>
+            <li class="gb-row gb-row-nobtn" data-level="a" data-search="fluency fluency goals cluttering rapid, disorganized, hard-to-follow speech fast rate rapid speech disorganized communication breakdown cluttering curriculum use cluttering strategies to clarify speech during communication breakdowns">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><p>Use cluttering strategies to clarify speech during communication breakdowns</p></div>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="word-finding" style="--acc:#EAA23B">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Word Finding / Word Retrieval</h3>
+              <div class="gb-focus">Hesitations, pauses, and substitutions</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-word-findingword-retrieval-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="fluency fluency goals word finding / word retrieval hesitations, pauses, and substitutions word retrieval anomia tip of the tongue semantic phonological cues word finding/word retrieval curriculum improve word retrieval with semantic word association activities semantic strategies for word finding">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Semantic Strategies for Word Finding</div><p>Improve word retrieval with semantic word association activities</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/405b19e3-c56e-495f-bf40-901aa5cf39d0/word_finding_-_beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Word Finding / Word Retrieval packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="fluency fluency goals word finding / word retrieval hesitations, pauses, and substitutions word retrieval anomia tip of the tongue semantic phonological cues word finding/word retrieval curriculum improve word retrieval with phonological word association activities phonological strategies for word finding">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Phonological Strategies for Word Finding</div><p>Improve word retrieval with phonological word association activities</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/5a04f1d8-88ad-414e-b5f5-30ffb30cc099/word_finding_-_intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Word Finding / Word Retrieval packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="fluency fluency goals word finding / word retrieval hesitations, pauses, and substitutions word retrieval anomia tip of the tongue semantic phonological cues word finding/word retrieval curriculum use word-finding strategies in daily conversations conversational strategies for word finding">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Conversational Strategies for Word Finding</div><p>Use word-finding strategies in daily conversations</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/dcafcee7-a382-4db6-9a2b-10a68a50fd63/Word_finding_-_advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Word Finding / Word Retrieval packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+      <section class="gb-area" id="voice-resonance-goals">
+        <div class="gb-areahead">
+          <div>
+            <h2>Voice and resonance goals</h2>
+            <div class="gb-areadesc">How their voice sounds</div>
+          </div>
+          <a href="https://hub.speechandlanguagekids.com/posts/goal-packets-voiceresonance-curriculums" target="_blank" rel="noopener">All Voice/Resonance packets →</a>
+        </div>
+        <article class="gb-card" id="voice-foundations" style="--acc:#B37AB5">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Foundations of Healthy Voice Use</h3>
+              <div class="gb-focus">Vocal hygiene, strain, and breath support</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-foundations-of-healthy-voice-use-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="voice/resonance voice and resonance goals foundations of healthy voice use vocal hygiene, strain, and breath support vocal hygiene hoarse hoarseness vocal nodules breath support foundations of healthy voice use curriculum demonstrate compliance with vocal hygiene measures vocal hygiene and preventing strain">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Vocal Hygiene and Preventing Strain</div><p>Demonstrate compliance with vocal hygiene measures</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/013a61c1-2191-4c10-aea1-8d41c3bafc60/Foundations_for_Voice_-_Beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Foundations of Healthy Voice Use packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="voice/resonance voice and resonance goals foundations of healthy voice use vocal hygiene, strain, and breath support vocal hygiene hoarse hoarseness vocal nodules breath support foundations of healthy voice use curriculum use diaphragmatic breathing for proper breath support for speech breath control and support">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Breath Control and Support</div><p>Use diaphragmatic breathing for proper breath support for speech</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/e9c22555-394f-4977-b9ad-a77992edb831/Foundations_for_Voice_-_Intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Foundations of Healthy Voice Use packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="voice/resonance voice and resonance goals foundations of healthy voice use vocal hygiene, strain, and breath support vocal hygiene hoarse hoarseness vocal nodules breath support foundations of healthy voice use curriculum self-monitoring and carry-over of healthy voice strategies self-monitoring and carrying over voice strategies">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Self-Monitoring and Carrying Over Voice Strategies</div><p>Self-monitoring and carry-over of healthy voice strategies</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/4e63277d-bdd7-4db3-8e65-8149f3bb6f43/foundations_for_voice_-_advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Foundations of Healthy Voice Use packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="voice" style="--acc:#B37AB5">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Voice Therapy</h3>
+              <div class="gb-focus">Vocal quality, strain, tension, and control</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-voice-therapy-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="voice/resonance voice and resonance goals voice therapy vocal quality, strain, tension, and control vocal quality strain tension pitch loudness nodules hoarse voice therapy curriculum use strategies to reduce vocal strain, such as diaphragmatic breathing, easy onset, and continuous voicing reducing vocal strain and tension">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Reducing Vocal Strain and Tension</div><p>Use strategies to reduce vocal strain, such as diaphragmatic breathing, easy onset, and continuous voicing</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/deecc831-ac8f-45f7-9012-cbfa38844ea7/Voice_therapy_-_beginner_goal.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Voice Therapy packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="voice/resonance voice and resonance goals voice therapy vocal quality, strain, tension, and control vocal quality strain tension pitch loudness nodules hoarse voice therapy curriculum use frontal focus resonance during conversation improving vocal clarity">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Improving Vocal Clarity</div><p>Use frontal focus resonance during conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/6ee9a6a1-96c7-4c9e-bf53-4de3081ea80c/voice_therapy_-_intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Voice Therapy packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="voice/resonance voice and resonance goals voice therapy vocal quality, strain, tension, and control vocal quality strain tension pitch loudness nodules hoarse voice therapy curriculum control pitch, loudness, and vocal endurance with a natural, sustainable vocal quality in conversation controlling pitch, loudness, and endurance">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Controlling Pitch, Loudness, and Endurance</div><p>Control pitch, loudness, and vocal endurance with a natural, sustainable vocal quality in conversation</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/5cb4b987-358c-4472-9c0b-7a4fede9ba16/Voice_therapy_-_advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Voice Therapy packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="resonance" style="--acc:#B37AB5">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Resonance (Nasality)</h3>
+              <div class="gb-focus">Hypernasality and nasal emission</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-resonance-nasality-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="voice/resonance voice and resonance goals resonance (nasality) hypernasality and nasal emission hypernasal hypernasality nasal emission cleft palate velopharyngeal resonance (nasality) curriculum discriminate between oral resonance and hypernasality developing awareness and discrimination of resonance/nasality">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Developing Awareness and Discrimination of Resonance/Nasality</div><p>Discriminate between oral resonance and hypernasality</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/7891cf52-bcb1-450d-911c-8d140c516380/Resonance_-_Beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Resonance (Nasality) packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="voice/resonance voice and resonance goals resonance (nasality) hypernasality and nasal emission hypernasal hypernasality nasal emission cleft palate velopharyngeal resonance (nasality) curriculum use oral resonance when reading aloud using oral resonance in structured speech tasks">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Using Oral Resonance in Structured Speech Tasks</div><p>Use oral resonance when reading aloud</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/cc0a6dbf-95a3-4139-8eb2-354195800307/Resonance_-_Intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Resonance (Nasality) packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="voice/resonance voice and resonance goals resonance (nasality) hypernasality and nasal emission hypernasal hypernasality nasal emission cleft palate velopharyngeal resonance (nasality) curriculum use oral airflow/resonance throughout the day generalization of oral resonance">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Generalization of Oral Resonance</div><p>Use oral airflow/resonance throughout the day</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/ace61fe6-5b1f-4a13-92e2-9599c1293cdb/Resonance_-_Advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Resonance (Nasality) packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+        <article class="gb-card" id="prosody" style="--acc:#B37AB5">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Prosody</h3>
+              <div class="gb-focus">Pitch, volume, and rate</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-prosody-curriculum" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="b" data-search="voice/resonance voice and resonance goals prosody pitch, volume, and rate monotone intonation volume rate pitch loud quiet prosody curriculum identify and describe pitch, rate, and volume in recorded or live environmental sounds attending to prosody in sounds and speech">
+              <span class="gb-badge gb-badge-b">Beginner</span>
+              <div class="gb-text"><div class="gb-title">Attending to Prosody in Sounds and Speech</div><p>Identify and describe pitch, rate, and volume in recorded or live environmental sounds</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/678cd121-649f-41c2-8b33-f490d5253350/Prosody_-_Beginner.pdf" target="_blank" rel="noopener" aria-label="Open Beginner Prosody packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="i" data-search="voice/resonance voice and resonance goals prosody pitch, volume, and rate monotone intonation volume rate pitch loud quiet prosody curriculum demonstrate expected prosody (pitch, rate, and volume) in phrases and sentences using expected prosody in speech">
+              <span class="gb-badge gb-badge-i">Intermediate</span>
+              <div class="gb-text"><div class="gb-title">Using Expected Prosody in Speech</div><p>Demonstrate expected prosody (pitch, rate, and volume) in phrases and sentences</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/9933aaa3-3c21-4ae4-8465-ed1913eaa4a0/prosody_-_Intermediate.pdf" target="_blank" rel="noopener" aria-label="Open Intermediate Prosody packet">Open packet</a>
+            </li>
+            <li class="gb-row" data-level="a" data-search="voice/resonance voice and resonance goals prosody pitch, volume, and rate monotone intonation volume rate pitch loud quiet prosody curriculum use expected prosody during conversation throughout the day generalizing expected prosody">
+              <span class="gb-badge gb-badge-a">Advanced</span>
+              <div class="gb-text"><div class="gb-title">Generalizing Expected Prosody</div><p>Use expected prosody during conversation throughout the day</p></div>
+              <a class="gb-open" href="https://media2-production.mightynetworks.com/asset/0bcc076d-0275-497e-be90-3b5f55c0ed0a/Prosody_-_Advanced.pdf" target="_blank" rel="noopener" aria-label="Open Advanced Prosody packet">Open packet</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+      <section class="gb-area" id="executive-functioning">
+        <div class="gb-areahead">
+          <div>
+            <h2>Executive functioning</h2>
+            <div class="gb-areadesc">Goal packets coming soon. Related resources in the meantime.</div>
+          </div>
+          <a href="https://hub.speechandlanguagekids.com/posts/goal-packets-executive-functioning" target="_blank" rel="noopener">All Executive Functioning packets →</a>
+        </div>
+        <article class="gb-card" id="executive-functioning-resources" style="--acc:#0093AD">
+          <div class="gb-cardhead">
+            <div>
+              <h3>Executive Functioning</h3>
+              <div class="gb-focus">Related resources</div>
+            </div>
+            <div class="gb-headlinks"><a href="https://hub.speechandlanguagekids.com/posts/goal-packets-executive-functioning-96084171" target="_blank" rel="noopener">Curriculum page →</a></div>
+          </div>
+          <ul class="gb-rows">
+            <li class="gb-row" data-level="all" data-search="executive functioning executive functioning executive functioning related resources executive function attention planning organization executive functioning executive functioning screening quiz">
+              <span class="gb-badge gb-badge-n">Resource</span>
+              <div class="gb-text"><div class="gb-title">Executive Functioning Screening Quiz</div></div>
+              <a class="gb-open" href="https://carrie-opzgxszf.scoreapp.com/" target="_blank" rel="noopener">Open</a>
+            </li>
+            <li class="gb-row" data-level="all" data-search="executive functioning executive functioning executive functioning related resources executive function attention planning organization executive functioning executive functioning visual aids">
+              <span class="gb-badge gb-badge-n">Resource</span>
+              <div class="gb-text"><div class="gb-title">Executive Functioning Visual Aids</div></div>
+              <a class="gb-open" href="https://hub.speechandlanguagekids.com/posts/visual-supportsaids-visual-aids-for-executive-functioning" target="_blank" rel="noopener">Open</a>
+            </li>
+            <li class="gb-row" data-level="all" data-search="executive functioning executive functioning executive functioning related resources executive function attention planning organization executive functioning executive function and attention course">
+              <span class="gb-badge gb-badge-n">Resource</span>
+              <div class="gb-text"><div class="gb-title">Executive Function and Attention Course</div></div>
+              <a class="gb-open" href="https://hub.speechandlanguagekids.com/spaces/12376182/content" target="_blank" rel="noopener">Open</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('slk-hub-goal-bank'); if(!root) return;
+  var input=root.querySelector('.gb-search'), pills=root.querySelectorAll('.gb-pill[data-level]'), shown=root.querySelector('.gb-shown'),
+      clear=root.querySelector('.gb-clear'), empty=root.querySelector('.gb-empty'), level='all',
+      layout=root.querySelector('.gb-layout'), aside=root.querySelector('.gb-aside'), main=root.querySelector('.gb-main'), nav=root.querySelector('.gb-nav'), first=true;
+  function split(){var s=main.offsetTop<=aside.offsetTop+4;layout.classList.toggle('is-split',s);if(first){nav.open=s;first=false;}}
+  split(); if(window.ResizeObserver){new ResizeObserver(split).observe(layout);}else{window.addEventListener('resize',split);}
+  function apply(){
+    var words=input.value.toLowerCase().replace(/[\/"“”]/g,' ').split(/\s+/).filter(Boolean), n=0;
+    root.querySelectorAll('.gb-area').forEach(function(area){
+      var areaHas=false;
+      area.querySelectorAll('.gb-card').forEach(function(card){
+        var cardHas=false;
+        card.querySelectorAll('.gb-row').forEach(function(r){
+          var hay=' '+r.getAttribute('data-search').replace(/[\/"“”,.;:()]/g,' ').replace(/\s+/g,' ')+' ', lv=r.getAttribute('data-level');
+          var ok=(level==='all'||lv==='all'||lv===level)&&words.every(function(w){return w.length<=2?hay.indexOf(' '+w+' ')>-1:hay.indexOf(w)>-1;});
+          r.hidden=!ok; if(ok){cardHas=true; if(lv!=='all') n++;}
+        });
+        card.hidden=!cardHas; if(cardHas) areaHas=true;
+        var link=root.querySelector('.gb-navitem[data-cur="'+card.id+'"]'); if(link) link.hidden=!cardHas;
+      });
+      area.hidden=!areaHas;
+      var grp=root.querySelector('.gb-navgroup[data-area="'+area.id+'"]'); if(grp) grp.hidden=!areaHas;
+    });
+    shown.textContent=n; empty.hidden=!!root.querySelector('.gb-area:not([hidden])'); clear.hidden=!(words.length||level!=='all');
+  }
+  function setLevel(l){level=l;pills.forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-level')===l?'true':'false');});apply();}
+  function reset(){input.value='';setLevel('all');}
+  input.addEventListener('input',apply);
+  pills.forEach(function(p){p.addEventListener('click',function(){setLevel(p.getAttribute('data-level'));});});
+  clear.addEventListener('click',reset); root.querySelector('.gb-clear2').addEventListener('click',reset);
+})();
+</script>
+<script>
+(function(){
+  var html=document.documentElement, embedded=false;
+  try{embedded=window.self!==window.top;}catch(e){embedded=true;}
+  if(embedded) html.classList.add('is-embed');
+  function fsEl(){return document.fullscreenElement||document.webkitFullscreenElement;}
+  function jump(hash){if(!hash)return;var el=document.querySelector(hash);if(el)setTimeout(function(){window.scrollTo(0,el.getBoundingClientRect().top+window.pageYOffset-12);},120);}
+  function open(hash){
+    var can=document.fullscreenEnabled||document.webkitFullscreenEnabled;
+    if(can){
+      var req=html.requestFullscreen?html.requestFullscreen():html.webkitRequestFullscreen();
+      if(req&&req.then){req.then(function(){jump(hash);},function(){window.open(location.href.split('#')[0]+hash,'_blank');});}else{jump(hash);}
+    } else window.open(location.href.split('#')[0]+hash,'_blank');
+  }
+  function sync(){html.classList.toggle('is-full',!!fsEl());if(!fsEl())window.scrollTo(0,0);}
+  document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
+  document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){open(b.getAttribute('data-open'));});});
+  document.querySelector('.gb-exit').addEventListener('click',function(){(document.exitFullscreen||document.webkitExitFullscreen).call(document);});
+  if(location.hash) jump(location.hash);
+})();
+</script>
+</body>
+</html>
